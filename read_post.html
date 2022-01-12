@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Signup Form</title>
+		
+		
+<link rel="stylesheet"
+href=
+"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+integrity=
+"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+crossorigin="anonymous">	
+		
+<link rel="stylesheet" type="text/css" href="style.css">
+		
+</head>
+<body>
+	
+	<br>
+	<br>
+	<br>
+    <div class="ticketDiv"> post </div>
+	<div class="container" >
+		<div class="row">
+		<div class="col-md-3">
+					
+		</div>
+				
+		<div class="col-md-6 main">
+					
+			<form action="/sign_up" method="post">
+					
+			<h1> login </h1>
+							
+						<br>
+			<button>read</button>
+					
+			</form>
+					
+		</div>
+				
+				
+		<div class="col-md-3">
+		</div>
+				
+	</div>
+	</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+	<script>
+		let btn=document.querySelector('button');
+		let ticket=document.querySelector(".ticketDiv");
+        console.log(ticket);
+        btn.addEventListener('click',async function(e){
+            
+			e.preventDefault();
+			let resp=await axios.post('/auth/read_post',{});
+			console.log(resp.data);
+            
+            let li=document.createElement("div");
+            for(let i=0;i<resp.data.length;i++){
+                let s=resp.data[i]._id;
+                console.log(s);
+                let ticketDiv = document.createElement("div");
+                ticketDiv.innerHTML = `<div>
+                <div>${resp.data[i].post}</div>
+                <div><button class="ilikeit">like</button><button class="qwert" id=${resp.data[i]._id}>comment</button></div><div class="letscomment"><input class="post_to_be_commented"
+			placeholder="write post" required />
+                    <button class="submitcomment" id=${resp.data[i]._id}>read</button></div><button class="deletepost" id=${resp.data[i]._id}>delete</button><div>
+                </div>`;
+                ticket.appendChild(ticketDiv);                
+            }
+            let letsdelete=document.querySelectorAll(".deletepost");
+            for(let i=0;i<letsdelete.length;i++){
+                letsdelete[i].addEventListener('click',async function(e){
+                    let id=commentpos[i].id;
+                    console.log(id);
+                    await axios.post('/auth/deltepost',{id})
+                })
+            }
+            let qwe=document.querySelectorAll(".qwert");
+            for(let i=0;i<qwe.length;i++){
+                qwe[i].addEventListener('click',async function(e){
+                    let email=qwe[i].id;
+                    let commentrecived=await axios.post('/auth/readcomments',{email});
+                    console.log(commentrecived);
+                    for(let j=0;j<commentrecived.data.length;j++){
+                        let ticketDiv = document.createElement("div");
+                    ticketDiv.innerHTML = `<div>
+                    <div>${commentrecived.data[j]}</div>
+                    </div>`;
+                    qwe[i].appendChild(ticketDiv);
+                    }
+                });}
+            let commentpos=document.querySelectorAll(".submitcomment");
+            let realcomment=document.querySelectorAll(".post_to_be_commented");
+            console.log(commentpos);
+            for(let i=0;i<commentpos.length;i++){
+                commentpos[i].addEventListener('click',async function(e){
+                    console.log(commentpos[i])
+                    console.log(realcomment[i].value);
+                    let email=realcomment[i].value;
+                    let id=commentpos[i].id;
+                    await axios.post('/auth/upload_comment',{email,id});
+                })
+            }
+            let likepos=document.querySelectorAll(".ilikeit");
+            for(let i=0;i<likepos.length;i++){
+                likepos[i].addEventListener('click',async function(e){
+                    let id=commentpos[i].id;
+                    console.log(id);
+                    await axios.post('/auth/upload_like',{id});
+                })
+            }
+		})
+	</script>
+</body>
+</html>	

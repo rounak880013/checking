@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Signup Form</title>
+		
+		
+<link rel="stylesheet"
+href=
+"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+integrity=
+"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+crossorigin="anonymous">	
+		
+<link rel="stylesheet" type="text/css" href="style.css">
+		
+</head>
+<body>
+	
+	<br>
+	<br>
+	<br>
+	<div class="container" >
+		<div class="row">
+		<div class="col-md-3">
+					
+		</div>
+				
+		<div class="col-md-6 main">
+					
+			<form action="/sign_up" method="post">
+					
+			<h1> login </h1>
+							
+			<input class="box" type="email" name="email" id="email"
+			placeholder="write post" required /><br>
+							
+						<br>
+			<button>login</button>
+					
+			</form>
+					
+		</div>
+				
+				
+		<div class="col-md-3">
+		</div>
+				
+	</div>
+	</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+	<script>
+		let btn=document.querySelector('button');
+		btn.addEventListener('click',async function(e){
+			e.preventDefault();
+			let email=document.querySelector("input[type='email']").value;
+			console.log(email);
+			let resp=await axios.post('/auth/posting',{email});
+			console.log(resp.data);
+		})
+	</script>
+</body>
+</html>	
